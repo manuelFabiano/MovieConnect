@@ -1,4 +1,5 @@
 <?php
+//Verifica che la richiesta di inserimento di quest'opera sia stata accettata
 include_once('./db/db.php');
 $id = $_GET['id'];
 $sql="SELECT risposta FROM richiesta_inserimento WHERE id_scheda = $id";

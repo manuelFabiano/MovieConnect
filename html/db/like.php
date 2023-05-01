@@ -9,6 +9,7 @@ if($_SERVER["REQUEST_METHOD"] === "POST"){
     if($result = $conn->query($sql)){
         echo "Success!";
     }else echo $conn->error;
-}else return false;
+} 
+$conn->close();
 
 ?>

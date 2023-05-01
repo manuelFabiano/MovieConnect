@@ -1,4 +1,5 @@
 <?php 
+//Cambia il ruolo ad un utente
 include_once("./db.php");
 session_start();
 if(isset($_POST['username']) and $_SESSION['tipo'] == 2){
@@ -15,9 +16,10 @@ if(isset($_POST['username']) and $_SESSION['tipo'] == 2){
         $sql = "UPDATE account SET tipo = '0' WHERE username = '$usr'";
     }
     if($res = $conn->query($sql)){
-        echo "<script>
-                      window.location.href = '../users.php';
-              </script>";
+        $conn->close();
+        header("location: ../users.php");
     }else echo $conn->error;
+    $conn->close();
 }
+$conn->close();
 ?>

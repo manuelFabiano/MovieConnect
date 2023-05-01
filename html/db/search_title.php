@@ -1,4 +1,5 @@
 <?php
+//Viene incluso nelle ajax per l'autocomplete, 
 session_start();
 require_once "./db.php";
 if (isset($_POST['term'])) {

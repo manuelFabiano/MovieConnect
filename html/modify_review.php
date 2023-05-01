@@ -1,16 +1,15 @@
 <?php
+//Questa pagina è molto simile a write_review, fetch_review.php preleva i dati precedentemente pubblicati 
+//dall'utente per permettergli di modificarli
 session_start();
 if (isset($_GET['id'])) {
+    //fetch_title serve a prelevare il titolo dell'opera con id = $_GET['id']
     include("./db/fetch_title.php");
     include("./db/fetch_review.php"); 
     ?>
 
     <head>
-        <meta charset="UTF-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Progetto Basi</title>
-        <link href="./output.css" rel="stylesheet">
         <script src="https://cdn.tailwindcss.com"></script>
     </head>
 
@@ -48,7 +47,7 @@ if (isset($_GET['id'])) {
                             $tags_string .= $tag['label'];
                             $tags_string .= " ";
                         }
-                        echo rtrim($tags_string);
+                        echo rtrim($tags_string); //rimuove gli spazi dalla fine della stringa
                         ?>
                     </textarea>
                 </div>

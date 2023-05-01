@@ -1,14 +1,12 @@
 <?php
 session_start();
+//CODICE DA ESEGUIRE SE $_GET['id'] E' SETTATO
 if (isset($_GET['id'])) {
+    //fetch_title serve a prelevare il titolo dell'opera con id = $_GET['id']
     include("./db/fetch_title.php") ?>
 
     <head>
-        <meta charset="UTF-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Progetto Basi</title>
-        <link href="./output.css" rel="stylesheet">
+        <title>MovieConnect</title>
         <script src="https://cdn.tailwindcss.com"></script>
     </head>
 
@@ -47,14 +45,10 @@ if (isset($_GET['id'])) {
         </div>
     </body>
 
-<? } else { ?>
+<? } else { //CODICE DA ESEGUIRE SE $_GET['id'] NON E' SETTATO ?>
 
     <head>
-        <meta charset="UTF-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Progetto Basi</title>
-        <link href="./output.css" rel="stylesheet">
         <script src="https://cdn.tailwindcss.com"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
@@ -92,34 +86,6 @@ if (isset($_GET['id'])) {
         </div>
     </body>
     <!-- SCRIPT PER AUTOCOMPLETE -->
-    <script type="text/javascript">
-        $(document).ready(function() {
-            $("#titolo").on("keyup", function() {
-                var search = $(this).val();
-                if (search !== "") {
-                    $.ajax({
-                        url: "./db/search_title.php",
-                        type: "POST",
-                        cache: false,
-                        data: {
-                            searchfilm: search
-                        },
-                        success: function(data) {
-                            $("#search-result").html(data);
-                            $("#search-result").fadeIn();
-                        }
-                    });
-                } else {
-                    $("#search-result").html("");
-                    $("#search-result").fadeOut();
-                }
-            });
-            // click one particular search name it's fill in textbox
-            $(document).on("click", "li", function() {
-                $('#titolo').val($(this).text());
-                $('#search-result').fadeOut("fast");
-            });
-        });
-    </script>
+    <script src="./js/autocomplete_film.js"></script>
 
 <? } ?>

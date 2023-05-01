@@ -1,15 +1,12 @@
 <?php
 session_start();
 if ($_SESSION['tipo'] == 2) {
+    //fetch_users preleva tutti gli utenti registrati al sito
     include("./db/fetch_users.php");
 ?>
 
     <head>
-        <meta charset="UTF-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Progetto Basi</title>
-        <link href="./output.css" rel="stylesheet">
+        <title>MovieConnect</title>
         <script src="https://cdn.tailwindcss.com"></script>
     </head>
 
@@ -22,7 +19,7 @@ if ($_SESSION['tipo'] == 2) {
             </button>
         <div class="bg-white w-4/5 h-4/5 overflow-y-scroll rounded-2xl shadow-2xl p-7">
             <div class="relative shadow-md sm:rounded-lg">
-                <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+                <table class="w-full text-sm text-left text-gray-500 ">
                     <thead class="text-xs text-gray-700 uppercase bg-gray-50">
                         <tr>
                             <th scope="col" class="px-6 py-3">
@@ -125,6 +122,7 @@ if ($_SESSION['tipo'] == 2) {
                 </div>
             </div>
         </div>
+        <!--MODAL BANNA UTENTE-->
 
         <!--MODAL CAMBIA RUOLO-->
         <div id="cambia-ruolo-modal" class="fixed z-10 inset-0 overflow-y-auto hidden">
@@ -148,53 +146,8 @@ if ($_SESSION['tipo'] == 2) {
                 </div>
             </div>
         </div>
+        <!--MODAL CAMBIA RUOLO-->
     </body>
-    <script>
-        function banUser(username) {
-            // Mostra il modale
-            const banUserModal = document.getElementById('banna-utente-modal');
-            banUserModal.classList.remove('hidden');
-
-            const banUserForm = document.getElementById('banna-utente-form');
-            // Crea un nuovo elemento input di tipo "hidden"
-            const hiddenInput = document.createElement('input');
-            hiddenInput.setAttribute('type', 'hidden');
-            hiddenInput.setAttribute('name', 'username');
-            hiddenInput.setAttribute('value', username);
-
-            banUserForm.appendChild(hiddenInput);
-
-            const cancelButton = document.getElementById('banna-utente-modal-cancel');
-            cancelButton.addEventListener('click', cancelBan);
-        };
-        //funzione per disattivare il modale se si preme annulla
-        function cancelBan() {
-            const banUserModal = document.getElementById('banna-utente-modal');
-            banUserModal.classList.add('hidden');
-        }
-
-        function changeRole(username) {
-            // Mostra il modale
-            const changeRoleModal = document.getElementById('cambia-ruolo-modal');
-            changeRoleModal.classList.remove('hidden');
-
-            const changeRoleForm = document.getElementById('cambia-ruolo-form');
-            // Crea un nuovo elemento input di tipo "hidden"
-            const hiddenInput = document.createElement('input');
-            hiddenInput.setAttribute('type', 'hidden');
-            hiddenInput.setAttribute('name', 'username');
-            hiddenInput.setAttribute('value', username);
-
-            changeRoleForm.appendChild(hiddenInput);
-
-            const cancelButton = document.getElementById('cambia-ruolo-modal-cancel');
-            cancelButton.addEventListener('click', cancelChangeRole);
-        };
-        //funzione per disattivare il modale se si preme annulla
-        function cancelChangeRole() {
-            const changeRoleModal = document.getElementById('cambia-ruolo-modal');
-            changeRoleModal.classList.add('hidden');
-        }
-    </script>
+    <script src="./js/users.js"></script>
 
 <? } ?>

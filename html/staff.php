@@ -1,13 +1,10 @@
 <?php
+//PANNELLO DEGLI ADMIN
 session_start();
 if($_SESSION['tipo'] == 2){
 ?>
 <head>
-        <meta charset="UTF-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Progetto Basi</title>
-        <link href="./output.css" rel="stylesheet">
+        <title>MovieConnect</title>
         <script src="https://cdn.tailwindcss.com"></script>
     </head>
 <body class="h-screen overflow-hidden flex flex-col items-center justify-center" style="background: #edf2f7;">

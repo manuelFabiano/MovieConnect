@@ -4,6 +4,7 @@ if (!isset($_SESSION['username'])) {
     header("location: ./index.php");
 }
 include("./navbar.php");
+//search.php fornisce i risultati relativi alla ricerca
 include("./db/search.php");
 ?>
 <html>
@@ -146,94 +147,11 @@ include("./db/search.php");
 
 </div>
 
-<script>
+<!--SCRIPT PER I FILTRI-->
+<script src="./js/search_result.js"></script>
 
-films = document.getElementById('film');
-series = document.getElementById('series');
-people = document.getElementById('people');
-
-document.getElementById('filmbutton').addEventListener('click', function(){
-    if(films.classList.contains('hidden')){
-        films.classList.remove('hidden');
-    }
-    if(!series.classList.contains('hidden')){
-        series.classList.add('hidden');
-    }
-    if(!people.classList.contains('hidden')){
-        people.classList.add('hidden');
-    }
-})
-
-document.getElementById('seriesbutton').addEventListener('click', function(){
-    if(series.classList.contains('hidden')){
-        series.classList.remove('hidden');
-    }
-    if(!films.classList.contains('hidden')){
-        films.classList.add('hidden');
-    }
-    if(!people.classList.contains('hidden')){
-        people.classList.add('hidden');
-    }
-})
-
-document.getElementById('peoplebutton').addEventListener('click', function(){
-    if(people.classList.contains('hidden')){
-        people.classList.remove('hidden');
-    }
-    if(!films.classList.contains('hidden')){
-        films.classList.add('hidden');
-    }
-    if(!series.classList.contains('hidden')){
-        series.classList.add('hidden');
-    }
-})
-
-document.getElementById('allbutton').addEventListener('click', function(){
-    if(people.classList.contains('hidden')){
-        people.classList.remove('hidden');
-    }
-    if(films.classList.contains('hidden')){
-        films.classList.remove('hidden');
-    }
-    if(series.classList.contains('hidden')){
-        series.classList.remove('hidden');
-    }
-    
-})
-
-</script>
-
-<script type="text/javascript">
-    $(document).ready(function() {
-        $("#search").on("keyup", function() {
-            var search = $(this).val();
-            if (search !== "") {
-                $.ajax({
-                    url: "./db/search_title.php",
-                    type: "POST",
-                    cache: false,
-                    data: {
-                        term: search
-                    },
-                    success: function(data) {
-                        $("#search-result").html(data);
-                        $("#search-result").removeClass('hidden');
-                        $("#search-result").fadeIn();
-                    }
-                });
-            } else {
-                $("#search-result").html("");
-                $("#search-result").addClass('hidden');
-                $("#search-result").fadeOut();
-            }
-        });
-        // click one particular search name it's fill in textbox
-        $(document).on("click", "li", function() {
-            $('#search').val($(this).text());
-            $('#search-result').fadeOut("fast");
-        });
-    });
-</script>
+<!--SCRIPT PER AUTOCOMPLETE-->
+<script type="text/javascript" src="./js/autocomplete.js"></script>
 
 
 </html>

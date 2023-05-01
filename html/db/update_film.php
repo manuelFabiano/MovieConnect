@@ -16,15 +16,13 @@ $fine = $conn->real_escape_string($_POST['fine']);
 $files = array_filter($_FILES['locandine']['name']);
 //Salvo le locandine
 $total_count = count($_FILES['locandine']['name']);
-// Loop through every file
+// Loop attraverso tutti i file
 for ($i = 0; $i < $total_count; $i++) {
-    //The temp file path is obtained
+    //Salvo il path temporaneo
     $tmpFilePath = $_FILES['locandine']['tmp_name'][$i];
-    //A file path needs to be present
     if ($tmpFilePath != "") {
-        //Setup our new file path
+        //Nuovo path
         $newFilePath = "../poster/" . $_FILES['locandine']['name'][$i];
-        //File is uploaded to temp dir
         $nomefile = $_FILES['locandine']['name'][$i];
         if (move_uploaded_file($tmpFilePath, $newFilePath)) {
             $sql1 = "INSERT INTO locandina (label, id_scheda, percorso_immagine) VALUES ('$nomefile','$id_scheda','$nomefile')";
@@ -63,6 +61,9 @@ if ($tipo == 0) {
 if ($conn->query($sql2)) {
     $sql3 = "UPDATE richiesta_inserimento SET risposta = '1', moderatore = '$moderatore' WHERE id_scheda = '$id_scheda'";
     $conn->query($sql3);
-    echo "<script>window.location.href = '../film.php?id=".$id_scheda."';</script>";
-}else
-echo $conn->error;
+    $conn->close();
+    header('location: ../film.php?id='.$id_scheda);
+}else{
+    echo $conn->error;
+    $conn->close();
+}

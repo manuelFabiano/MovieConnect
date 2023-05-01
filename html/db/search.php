@@ -1,4 +1,6 @@
 <?php
+//Viene incluso in search_result.php
+
 require_once('./db/db.php');
 
 

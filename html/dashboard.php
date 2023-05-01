@@ -1,9 +1,11 @@
 <?php
 session_start();
+//Se l'utente non si è loggato non può accedere a questa pagina
 if (!isset($_SESSION['username'])) {
     header("location: ./index.php");
 }
 include("./navbar.php");
+//fetch_top.php preleva dal db i 10 film/serie con la media voti più alta
 include("./db/fetch_top.php");
 ?>
 <style>
@@ -50,85 +52,49 @@ include("./db/fetch_top.php");
         </form>
     </div>
     <div class="overflow-visible overflow-x-scroll flex gap-2 bg-gradient-to-r from-blue-700 to-blue-400 pb-1 pt-2 w-11/12 h-fit mt-2 px-10 rounded-t-2xl">
-    <div class="text-white font-bold text-4xl">Top 10</div>
+        <div class="text-white font-bold text-4xl">Top 10</div>
     </div>
     <div class="overflow-visible overflow-x-scroll flex gap-2 bg-gradient-to-r from-blue-700 to-blue-400 pb-2 pt-3 w-11/12 h-1/2 px-10 rounded-b-2xl">
-        <!--<div class="text-white font-bold text-4xl">Più votati</div>-->
-        <!--<div class="flex gap-2  overflow-y-visible">-->
-        <?php foreach($top10 as $card){
-        if($card['tipo'] == 0){
-        echo '<form action="./film.php" method="get" class="overflow-visible transform transition hover:scale-105 duration-300 ease-in-out">
-                <input type="hidden" id="id" name="id" value="'.$card['id'].'">
+        <?php foreach ($top10 as $card) {
+            //FILM
+            if ($card['tipo'] == 0) {
+                echo '<form action="./film.php" method="get" class="overflow-visible transform transition hover:scale-105 duration-300 ease-in-out">
+                <input type="hidden" id="id" name="id" value="' . $card['id'] . '">
                 <div onclick="javascript:this.parentNode.submit();" class="cursor-pointer max-w-full w-48 bg-white rounded-2xl shadow-sm hover:shadow-2xl ">
                     <div class="sticky">
-                    <div class="z-10 absolute bg-white rounded-full p-1">'.$card['media'].'</div>
-                    <img src="./poster/'.$card['percorso_immagine'].'" class="rounded-t-lg" />
+                    <div class="z-10 absolute bg-white rounded-full p-1">' . $card['media'] . '</div>
+                    <img src="./poster/' . $card['percorso_immagine'] . '" class="rounded-t-lg" />
                     </div>
                     <div class="p-2">
-                        <div>'.$card['titolo'].'</div>
-                        <div>Film - '.$card['uscita'].'</div>
+                        <div>' . $card['titolo'] . '</div>
+                        <div>Film - ' . $card['uscita'] . '</div>
 
                     </div>
                 </div>
             </form>';
-        }else{
-            echo '<form action="./film.php" method="get" class="overflow-visible transform transition hover:scale-105 duration-300 ease-in-out">
-            <input type="hidden" id="id" name="id" value="'.$card['id'].'">
+            } else {
+                //SERIE
+                echo '<form action="./film.php" method="get" class="overflow-visible transform transition hover:scale-105 duration-300 ease-in-out">
+            <input type="hidden" id="id" name="id" value="' . $card['id'] . '">
             <div onclick="javascript:this.parentNode.submit();" class="cursor-pointer max-w-full w-48 bg-white rounded-2xl shadow-sm hover:shadow-2xl transition-shadow duration-300 ease-in-out">
             <div class="sticky">
-            <div class="z-10 absolute bg-white rounded-full p-1">'.$card['media'].'</div>
-            <img src="./poster/'.$card['percorso_immagine'].'" class="rounded-t-lg" />
+            <div class="z-10 absolute bg-white rounded-full p-1">' . $card['media'] . '</div>
+            <img src="./poster/' . $card['percorso_immagine'] . '" class="rounded-t-lg" />
             </div>
                 <div class="p-2">
-                    <div>'.$card['titolo'].'</div>
-                    <div>Serie TV - '.$card['inizio'].'/'.$card['fine'].'</div>
+                    <div>' . $card['titolo'] . '</div>
+                    <div>Serie TV - ' . $card['inizio'] . '/' . $card['fine'] . '</div>
 
                 </div>
             </div>
         </form>';
-
-        }
+            }
         }
         ?>
     </div>
 </div>
 
-
-
-
-
-
 <!-- SCRIPT PER AUTOCOMPLETE -->
-<script type="text/javascript">
-    $(document).ready(function() {
-        $("#search").on("keyup", function() {
-            var search = $(this).val();
-            if (search !== "") {
-                $.ajax({
-                    url: "./db/search_title.php",
-                    type: "POST",
-                    cache: false,
-                    data: {
-                        term: search
-                    },
-                    success: function(data) {
-                        $("#search-result").html(data);
-                        $("#search-result").removeClass('hidden');
-                        $("#search-result").fadeIn();
-                    }
-                });
-            } else {
-                $("#search-result").html("");
-                $("#search-result").addClass('hidden');
-                $("#search-result").fadeOut();
-            }
-        });
-        // click one particular search name it's fill in textbox
-        $(document).on("click", "li", function() {
-            $('#search').val($(this).text());
-            $('#search-result').fadeOut("fast");
-        });
-    });
-</script>
+<script type="text/javascript" src="./js/autocomplete.js"></script>
 
 </html>

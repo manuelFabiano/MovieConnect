@@ -8,7 +8,8 @@ if($_SERVER["REQUEST_METHOD"] === "POST"){
     $sql = "DELETE FROM mi_piace WHERE username = '$username' AND id_recensione = '$id_recensione'";
     if($result = $conn->query($sql))
         echo "Fatto!";
-
-}else return;
+    $conn->close();
+}else 
+    $conn->close();;
 
 ?>

@@ -1,5 +1,6 @@
 <?php
    session_start();
+   //Se l'utente è loggato lo reindirizza direttamente alla dashboard
    if(isset($_SESSION['username'])){
     header("location: ./dashboard.php");
 }

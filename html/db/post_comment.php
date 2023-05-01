@@ -11,14 +11,16 @@ if($_SERVER["REQUEST_METHOD"] === "POST"){
     $sql="INSERT INTO commento (username, id_recensione, data, ora, contenuto) VALUES ('$username', '$id_recensione', now(), now(), '$contenuto')";
     if($result = $conn->query($sql)){
        if($redirect == 'profile'){
+           $conn->close();
            header("location: ../profile.php?usr=".$_POST['username']);
        }
+        $conn->close();
         echo "<script>alert('Commento pubblicato!!');
                       window.location.href = '../film.php?id=".$_POST['id_scheda']."';
               </script>";
     }else{
-        echo "ERRORE: ".$conn->error;
+        echo "Errore nella query! ".$conn->error;
     }
 }
-
+$conn->close();
 ?>

@@ -1,4 +1,5 @@
 <?php
+//Aggiorna la recensione con i nuovi dati
 require_once('./db.php');
 $id_recensione = $conn->real_escape_string($_POST['id_recensione']);
 $id_scheda = $conn->real_escape_string($_POST['id_scheda']);
@@ -21,10 +22,13 @@ if ($conn->query($sql)) {
             $sql2->execute();
         //calcolo la nuova media    
         include("./calc_average.php");
+        $conn->close();
         echo "<script>alert('Recensione pubblicata!!');
                 window.location.href = '../film.php?id=".$id_scheda."';
             </script>";    
     }
+    $conn->close();
   } else {
-    echo "Errore nell'aggiornamento della riga: " . mysqli_error($conn);
+    echo "Errore nell'aggiornamento della riga: " . $conn->error;
+    $conn->close();
   }

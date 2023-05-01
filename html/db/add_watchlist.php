@@ -1,4 +1,5 @@
 <?php
+//Aggiunge un film alla watchlist dell'utente
 include_once("./db.php");
 session_start();
 if(isset($_POST['id']) and isset($_SESSION['username'])){
@@ -7,7 +8,9 @@ if(isset($_POST['id']) and isset($_SESSION['username'])){
 
     $sql = "INSERT INTO da_vedere (username, id_scheda) VALUES ('$username','$id_scheda')";
     if($conn->query($sql)){
+        $conn->close();
         header("location: ../film.php?id=".$id_scheda);
-    }else echo "Qualcosa è andato storto!";
-}
+    }else echo "Errore nella query! " . $conn->error;
+    $conn->close();
+}else $conn->close();
 ?>

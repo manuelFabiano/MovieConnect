@@ -1,17 +1,15 @@
 <?php
 session_start();
-if ($_SESSION['tipo'] == 2) {
+//Solo l'admin o il moderatore possono accedere a questa pagina
+if ($_SESSION['tipo'] > 0) {
     if (isset($_POST['id'])) {
         $id = $_POST['id'];
+        //fetch_film.php preleva tutti i dati presenti nel db sul film con id $id
         include("./db/fetch_film.php");
 ?>
 
         <head>
-            <meta charset="UTF-8">
-            <meta http-equiv="X-UA-Compatible" content="IE=edge">
-            <meta name="viewport" content="width=device-width, initial-scale=1.0">
-            <title>Progetto Basi</title>
-            <link href="./output.css" rel="stylesheet">
+            <title>MovieConnect</title>
             <script src="https://cdn.tailwindcss.com"></script>
             <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
             <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
@@ -98,7 +96,7 @@ if ($_SESSION['tipo'] == 2) {
                     </div>
                 </form>
                 <form id="inserisciruolo" action="./db/insert_role.php">
-                    <input type="hidden" id="id_scheda" name="id_scheda" value="<? echo $id ?>" />
+                    <input type="hidden" id="id_scheda_ruolo" name="id_scheda" value="<? echo $id; ?>" />
                     <div class="text-xl font-sans">Cast e Produzione </div>
                     <div class="flex flex-wrap gap-2">
                         <div>
@@ -132,81 +130,10 @@ if ($_SESSION['tipo'] == 2) {
 
             </div>
         </body>
-
+        <script type="text/javascript" src="./js/add_film.js"></script>
         <script>
-            var select = document.getElementById("tipo");
-            var selectedValue = select.options[select.selectedIndex].value;
-            console.log(selectedValue)
-            if (selectedValue == 0) {
-                document.getElementById('stagioni').setAttribute('disabled', '')
-                document.getElementById('inizio').setAttribute('disabled', '')
-                document.getElementById('fine').setAttribute('disabled', '')
-                document.getElementById('uscita').removeAttribute("disabled");
-            } else {
-                document.getElementById('stagioni').removeAttribute("disabled");
-                document.getElementById('inizio').removeAttribute("disabled");
-                document.getElementById('fine').removeAttribute("disabled");
-                document.getElementById('uscita').setAttribute('disabled', '');
-            }
-
-
-
-
-            document.getElementById('tipo_ruolo').onchange = function() {
-                if (document.getElementById('personaggio').hasAttribute("disabled")) {
-                    document.getElementById('personaggio').removeAttribute("disabled");
-                } else {
-                    document.getElementById('personaggio').setAttribute('disabled', '')
-                }
-            };
-
-            document.getElementById('tipo').onchange = function() {
-                if (document.getElementById('stagioni').hasAttribute("disabled")) {
-                    document.getElementById('stagioni').removeAttribute("disabled");
-                    document.getElementById('inizio').removeAttribute("disabled");
-                    document.getElementById('fine').removeAttribute("disabled");
-                    document.getElementById('uscita').setAttribute('disabled', '');
-                } else {
-                    document.getElementById('stagioni').setAttribute('disabled', '')
-                    document.getElementById('inizio').setAttribute('disabled', '')
-                    document.getElementById('fine').setAttribute('disabled', '')
-                    document.getElementById('uscita').removeAttribute("disabled");
-                }
-            };
-
-            //AUTOCOMPLETE CAST E STAFF
-            $(document).ready(function() {
-                $("#nome").on("keyup", function() {
-                    var search = $(this).val();
-                    if (search !== "") {
-                        $.ajax({
-                            url: "./db/search_actor.php",
-                            type: "POST",
-                            cache: false,
-                            data: {
-                                term: search
-                            },
-                            success: function(data) {
-                                $("#search-result").html(data);
-                                $("#search-result").removeClass('hidden');
-                                $("#search-result").fadeIn();
-                            }
-                        });
-                    } else {
-                        $("#search-result").html("");
-                        $("#search-result").addClass('hidden');
-                        $("#search-result").fadeOut();
-                    }
-                });
-                // click one particular search name it's fill in textbox
-                $(document).on("click", "li", function() {
-                    $('#nome').val($(this).text());
-                    $('#search-result').fadeOut("fast");
-                });
-            });
-
-
             //AJAX PER SUBMITTARE IL FORM DEI RUOLI
+            //Se il ruolo che si vuole aggiungere riguarda una persona non ancora nel db, servirà inserire anche una immagine
             $(document).ready(function() {
                 $('#inserisciruolo').submit(function(event) {
                     event.preventDefault(); // previene l'invio del form
@@ -232,7 +159,7 @@ if ($_SESSION['tipo'] == 2) {
                                 $('#inserisciruolo').find('div#foto').remove();
                                 // svuota tutti gli input del form
                                 $('#inserisciruolo').find('input').val('');
-                                $('#inserisciruolo').find('input#id_scheda').val('<? echo $id ?>');
+                                $('#inserisciruolo').find('input#id_scheda_ruolo').val('<? echo $id ?>');
 
                             }
                         },
@@ -243,7 +170,6 @@ if ($_SESSION['tipo'] == 2) {
                 });
             });
         </script>
-
 
 
 

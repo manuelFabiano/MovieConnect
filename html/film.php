@@ -16,7 +16,6 @@ include("./navbar.php");
 include("./db/fetch_data.php");
 include("./db/fetch_chart_data.php");
 $colore = $row['colore'];
-//TO-DO: Creare le funzioni per visualizzare tags, cast e recensioni 
 ?>
 <html>
 
@@ -49,13 +48,13 @@ $colore = $row['colore'];
 </head>
 
 <body style="background: #edf2f7;">
-   <!-- The Modal -->
+   <!-- Modal -->
    <div id="modal" class="hidden fixed top-0 left-0 z-50 w-screen h-screen bg-black/70 flex justify-center items-center">
 
-      <!-- The close button -->
+      <!-- Close button -->
       <a class="fixed z-90 top-6 right-8 text-white text-5xl font-bold" href="javascript:void(0)" onclick="closeModal()">&times;</a>
 
-      <!-- A big image will be displayed here -->
+      <!-- Big Image -->
       <img id="modal-img" class="max-w-[800px] max-h-[600px] object-cover" />
    </div>
    <div class="py-6 flex flex-col justify-center">
@@ -76,7 +75,7 @@ $colore = $row['colore'];
                         </div>
                         <div class="flex justify-center items-center pt-4">
                            <button type="button" class="flex justify-center items-center mr-4 h-full cursor-pointer group focus:outline-none" data-carousel-prev>
-                              <span class="text-gray-400 hover:text-gray-900 dark:hover:text-white group-focus:text-gray-900 dark:group-focus:text-white">
+                              <span class="text-gray-400 hover:text-gray-900 group-focus:text-gray-900 ">
                                  <svg aria-hidden="true" class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                                     <path fill-rule="evenodd" d="M7.707 14.707a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l2.293 2.293a1 1 0 010 1.414z" clip-rule="evenodd"></path>
                                  </svg>
@@ -84,7 +83,7 @@ $colore = $row['colore'];
                               </span>
                            </button>
                            <button type="button" class="flex justify-center items-center h-full cursor-pointer group focus:outline-none" data-carousel-next>
-                              <span class="text-gray-400 hover:text-gray-900 dark:hover:text-white group-focus:text-gray-900 dark:group-focus:text-white">
+                              <span class="text-gray-400 hover:text-gray-900  group-focus:text-gray-900 ">
                                  <svg aria-hidden="true" class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                                     <path fill-rule="evenodd" d="M12.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-2.293-2.293a1 1 0 010-1.414z" clip-rule="evenodd"></path>
                                  </svg>
@@ -143,8 +142,8 @@ $colore = $row['colore'];
                         <div class="mt-1 flex flex-wrap gap-2">
                            <?php
                            foreach ($tags as $tag) {
-                              if($tag['label'] != ""){
-                              echo '<div onclick="location.href = \'./search_result.php?search_tag=' . $tag['label'] . '\';" class="bg-white cursor-pointer rounded-lg w-fit p-1">
+                              if ($tag['label'] != "") {
+                                 echo '<div onclick="location.href = \'./search_result.php?search_tag=' . $tag['label'] . '\';" class="bg-white cursor-pointer rounded-lg w-fit p-1">
                               <div class="text-black text-xs">' . $tag['label'] . '</div>
                            </div>';
                               }
@@ -162,10 +161,9 @@ $colore = $row['colore'];
                               $i = true;
                            }
                         }
-
                         if ($i == true) {
                            echo '<form action="/modify_review.php" method="get">
-                  <button button data-popover-target="popover" data-popover-placement="right" name="id" value="' . $id . '" class=" bg-'.$colore.'-600 shadow-lg text-white  p-2 rounded  hover:bg-'.$colore.'-500 hover:text-gray-100">Modifica la tua recensione </button>
+                  <button button data-popover-target="popover" data-popover-placement="right" name="id" value="' . $id . '" class=" bg-' . $colore . '-600 shadow-lg text-white  p-2 rounded  hover:bg-' . $colore . '-500 hover:text-gray-100">Modifica la tua recensione </button>
                   <div data-popover id="popover" role="tooltip" class="absolute z-10 invisible inline-block w-64 text-sm text-gray-500 transition-opacity duration-300 bg-white border border-gray-200 rounded-lg shadow-sm opacity-0">
                      <div class="px-3 py-2 bg-gray-100 border-b border-gray-200 rounded-t-lg">
                         <h3 class="font-semibold text-gray-900">Vuoi cambiare qualcosa?</h3>
@@ -179,13 +177,13 @@ $colore = $row['colore'];
                <form action="./db/cancel_review.php" method="post">
                <input type="hidden" id="id" name="id" value="' . $row['id'] . '" />
                <input type="hidden" id="username" name="username" value="' . $_SESSION['username'] . '" />
-               <button type="submit" class=" bg-'.$colore.'-600 shadow-lg text-white  p-2 rounded  hover:bg-'.$colore.'-600 hover:text-gray-100">Cancella la tua recensione</button>
+               <button type="submit" class=" bg-' . $colore . '-600 shadow-lg text-white  p-2 rounded  hover:bg-' . $colore . '-600 hover:text-gray-100">Cancella la tua recensione</button>
                </form>
                ';
                         } else {
                            echo
                            '<form action="/write_review.php" method="get">
-                        <button button data-popover-target="popover" data-popover-placement="right" name="id" value="' . $id . '" class=" bg-'.$colore.'-600 shadow-lg text-white  p-2 rounded  hover:bg-'.$colore.'-500 hover:text-gray-100">Scrivi
+                        <button button data-popover-target="popover" data-popover-placement="right" name="id" value="' . $id . '" class=" bg-' . $colore . '-600 shadow-lg text-white  p-2 rounded  hover:bg-' . $colore . '-500 hover:text-gray-100">Scrivi
                            una recensione </button>
                         <div data-popover id="popover" role="tooltip" class="absolute z-10 invisible inline-block w-64 text-sm text-gray-500 transition-opacity duration-300 bg-white border border-gray-200 rounded-lg shadow-sm opacity-0">
                            <div class="px-3 py-2 bg-gray-100 border-b border-gray-200 rounded-t-lg">
@@ -203,7 +201,7 @@ $colore = $row['colore'];
                         echo
                         '<form action="./add_film.php" method="post">
                      <input type="hidden" id="id" name="id" value="' . $row['id'] . '" />
-                     <button type="submit" class=" bg-'.$colore.'-600 shadow-lg text-white  p-2 rounded  hover:bg-'.$colore.'-600 hover:text-gray-100">Modifica scheda</button>
+                     <button type="submit" class=" bg-' . $colore . '-600 shadow-lg text-white  p-2 rounded  hover:bg-' . $colore . '-600 hover:text-gray-100">Modifica scheda</button>
                   </form>';
                      }
                      ?>
@@ -211,23 +209,21 @@ $colore = $row['colore'];
                         echo
                         '<form action="./db/add_watchlist.php" method="post">
                      <input type="hidden" id="id" name="id" value="' . $row['id'] . '" />
-                     <button type="submit" class=" bg-'.$colore.'-600 shadow-lg text-white  p-2 rounded  hover:bg-'.$colore.'-600 hover:text-gray-100">Aggiungi alla watchlist</button>
+                     <button type="submit" class=" bg-' . $colore . '-600 shadow-lg text-white  p-2 rounded  hover:bg-' . $colore . '-600 hover:text-gray-100">Aggiungi alla watchlist</button>
                   </form>';
-                     }elseif($seen == 0){
+                     } elseif ($seen == 0) {
                         echo
                         '<form action="./db/mark_as_watched.php" method="post">
                      <input type="hidden" id="id" name="id" value="' . $row['id'] . '" />
-                     <button type="submit" class=" bg-'.$colore.'-600 shadow-lg text-white  p-2 rounded  hover:bg-'.$colore.'-600 hover:text-gray-100">Segna come visto</button>
+                     <button type="submit" class=" bg-' . $colore . '-600 shadow-lg text-white  p-2 rounded  hover:bg-' . $colore . '-600 hover:text-gray-100">Segna come visto</button>
                   </form>';
-                     }elseif($seen == 1){
+                     } elseif ($seen == 1) {
                         echo
                         '<form action="./db/mark_as_watched.php" method="post">
-                     <button disabled type="submit" class=" bg-'.$colore.'-600 shadow-lg text-white  p-2 rounded  hover:bg-'.$colore.'-600 hover:text-gray-100">Visto!</button>
+                     <button disabled type="submit" class=" bg-' . $colore . '-600 shadow-lg text-white  p-2 rounded  hover:bg-' . $colore . '-600 hover:text-gray-100">Visto!</button>
                   </form>';
                      }
-
                      ?>
-
                   </div>
                </div>
             </div>
@@ -252,7 +248,6 @@ $colore = $row['colore'];
                            </form>';
                }
                ?>
-
             </div>
             <div class="h-72 p-3 ml-1 w-2/6 mr-2 mt-1 overflow-clip flex items-center justify-center bg-gradient-to-r from-<? echo $colore ?>-900 to-<? echo $colore ?>-500 shadow-lg rounded-lg border border-gray-100">
                <iframe class="aspect-video rounded-lg w-trailer-custom" src="https://www.youtube.com/embed/<?php echo $trailers['link']; ?>?autoplay=1&mute=1" allowfullscreen>
@@ -261,15 +256,8 @@ $colore = $row['colore'];
          </div>
          <!-- CAST E STAFF -->
 
-
-
-
-
-
-
          <!-- RECENSIONI -->
          <div class="grid place-items-center">
-
             <ul class="my-2 space-y-4">
                <?php
                $i = 0;
@@ -286,8 +274,29 @@ $colore = $row['colore'];
                               <div class="text-gray-600 py-3 text-lg">Recensione di</div>
                               <div onclick="location.href = \'./profile.php?usr=' . $review['username'] . '\';" class="text-blue-500 ml-1 py-3 text-lg hover:underline cursor-pointer">' . $review['username'] . '</div>
                               <div class="text-gray-400 ml-2 pt-4 text-sm">pubblicata il ' . $review['data'] . ', alle ' . $review['ora'] . ' </div>
-                  
-                           </div>
+                           </div>';
+
+                     if($_SESSION['tipo'] > 0 or $_SESSION['username'] == $review['username']){
+                     echo '<button id="dropdownMenuIconHorizontalButton'.$review['id'].'" data-dropdown-toggle="dropdownDotsHorizontal'.$review['id'].'" class="self-center inline-flex items-center p-2 text-sm font-medium text-center text-gray-900 bg-white rounded-lg hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-50" type="button"> 
+                              <svg class="w-6 h-6" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M6 10a2 2 0 11-4 0 2 2 0 014 0zM12 10a2 2 0 11-4 0 2 2 0 014 0zM16 12a2 2 0 100-4 2 2 0 000 4z"></path></svg>
+                           </button>
+                           <div id="dropdownDotsHorizontal'.$review['id'].'" class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44">
+                           <ul class="py-2 text-sm text-gray-700" aria-labelledby="dropdownMenuIconHorizontalButton'.$review['id'].'">';
+                     if($_SESSION['username'] == $review['username']){
+                     echo '<li>
+                           <a href="./modify_review.php?id='.$review['id_scheda'].'" class="block px-4 py-2 hover:bg-gray-100">Modifica</a>
+                           </li>';
+                     }
+                     echo '<li>
+                           <form action="./db/cancel_review.php" method="post">
+                              <input type="hidden" id="id" name="id" value="' . $review['id_scheda'] . '" />
+                              <input type="hidden" id="username" name="username" value="' . $review['username'] . '" />
+                              <a onclick="javascript:this.parentNode.submit();" class="cursor-pointer block px-4 py-2 hover:bg-gray-100">Cancella</a>
+                           </form>
+                           </li>
+                           </ul>';
+                     }
+                  echo '</div>
                            <div class="bg-green-500 text-white font-bold rounded-full p-3 hover:bg-white hover:text-green-500">
                               ' . $review['voto'] . '</div>
                         </div>
@@ -324,15 +333,35 @@ $colore = $row['colore'];
                      foreach ($comments as $comment) {
                         $comment['data'] = date("d/m/Y", strtotime($comment['data']));
                         echo '<li class="bg-white border border-gray-100 w-full p-4 rounded-lg shadow-sm hover:shadow-2xl transition-shadow duration-300 ease-in-out">
-                           <div class="flex justify-between items-start">
+                           <div class="flex flex-col justify-between items-start">
                            <div class="flex">
                               <div class="text-gray-600 py-3 text-lg">Commento di</div>
                               <div class="text-blue-500 ml-1 py-3 text-lg hover:underline cursor-pointer">' . $comment['username'] . '</div>
-                              <div class="text-gray-400 ml-2 pt-4 text-sm">pubblicata il ' . $comment['data'] . ', alle ' . $comment['ora'] . ' </div>
-                  
-                           </div>
-                           <div class="bg-green-500 text-white font-bold rounded-full p-3 hover:bg-white hover:text-green-500">
-                              ' . 'test' . '</div>
+                              <div class="text-gray-400 ml-2 pt-4 text-sm">pubblicata il ' . $comment['data'] . ', alle ' . $comment['ora'] . ' </div>';
+                           
+                              if($_SESSION['tipo'] > 0 or $_SESSION['username'] == $comment['username']){
+                                 echo '<button id="dropdownMenuIconHorizontalButton'.$comment['id'].'" data-dropdown-toggle="dropdownDotsHorizontal'.$comment['id'].'" class="self-center inline-flex items-center p-2 text-sm font-medium text-center text-gray-900 bg-white rounded-lg hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-50" type="button"> 
+                                          <svg class="w-6 h-6" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M6 10a2 2 0 11-4 0 2 2 0 014 0zM12 10a2 2 0 11-4 0 2 2 0 014 0zM16 12a2 2 0 100-4 2 2 0 000 4z"></path></svg>
+                                       </button>
+                                       <div id="dropdownDotsHorizontal'.$comment['id'].'" class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44">
+                                       <ul class="py-2 text-sm text-gray-700" aria-labelledby="dropdownMenuIconHorizontalButton'.$comment['id'].'">';
+                                 if($_SESSION['username'] == $comment['username']){
+                                 echo '<li>
+                                       <a href="./modify_comment.php?id='.$comment['id'].'" class="block px-4 py-2 hover:bg-gray-100">Modifica</a>
+                                       </li>';
+                                 }
+                                 echo '<li>
+                                       <form action="./db/cancel_comment.php" method="post">
+                                          <input type="hidden" id="id" name="id" value="' . $comment['id'] . '" />
+                                          <input type="hidden" id="id_scheda" name="id_scheda" value="' . $row['id'] . '" />
+                                          <a onclick="javascript:this.parentNode.submit();" class="cursor-pointer block px-4 py-2 hover:bg-gray-100">Cancella</a>
+                                       </form>
+                                       </li>
+                                       </ul>';
+                                 }
+
+                  echo '</div>
+                           
                         </div>
                         <div class="overflow-y-auto scroll-smooth max-h-40 text-justify">' . $comment['contenuto'] . '
                         </div>
@@ -351,106 +380,12 @@ $colore = $row['colore'];
          <!-- RECENSIONI -->
       </div>
    </div>
+
+   <? $conn->close(); ?>
+
+   <script src="./js/film.js"></script>
+
    <script>
-      //MODAL:
-      // Get the modal by id
-      var modal = document.getElementById("modal");
-
-      // Get the modal image tag
-      var modalImg = document.getElementById("modal-img");
-
-      // this function is called when a small image is clicked
-      function showModal(src) {
-         modal.classList.remove('hidden');
-         modalImg.src = src;
-      }
-
-      document.addEventListener('keydown', evt => {
-         if (evt.key === 'Escape') {
-            closeModal();
-         }
-      });
-
-      // this function is called when the close button is clicked
-      function closeModal() {
-         modal.classList.add('hidden');
-      }
-
-      //LIKE:
-      function like(id, id_review, username) {
-         id_unlike = "unlike" + id;
-         var formData = new FormData();
-         formData.append('id', id_review);
-         formData.append('username', username);
-
-         fetch("./db/like.php", {
-            method: 'post',
-            body: formData
-         }).then(function(res) {
-            like = document.getElementById(id);
-            var unlike = document.getElementById(id_unlike);
-            unlike.classList.remove('hidden');
-            like.classList.add('hidden');
-            window.location.reload();
-         });
-      }
-
-      //UNLIKE:
-      function unlike(id, id_review, username) {
-         id_like = id.slice(6);
-         var formData = new FormData();
-         formData.append('id', id_review);
-         formData.append('username', username);
-
-         fetch("./db/unlike.php", {
-            method: 'post',
-            body: formData
-         }).then(function(res) {
-            var unlike = document.getElementById(id);
-            var like = document.getElementById(id_like);
-            unlike.classList.add('hidden');
-            like.classList.remove('hidden');
-            window.location.reload();
-         });
-      }
-
-      //VEDI COMMENTI
-      function showComments(button) {
-         // ottieni l'ID della recensione dalla proprietà "value" del pulsante "Vedi commenti"
-         const reviewId = button.getAttribute('value');
-
-         // seleziona la sezione dei commenti corretta utilizzando l'ID della recensione
-         const commentSection = document.getElementById(`comment-section-${reviewId}`);
-
-         // mostra la sezione dei commenti
-         commentSection.classList.remove('hidden');
-
-         // sostituisci il testo del pulsante "Vedi commenti" con "Nascondi commenti"
-         button.innerText = 'Nascondi commenti';
-
-         // aggiungi un nuovo evento click al pulsante "Nascondi commenti"
-         button.setAttribute('onclick', 'hideComments(this)');
-      }
-
-      //NASCONDI COMMENTI
-      function hideComments(button) {
-         // ottieni l'ID della recensione dalla proprietà "value" del pulsante "Nascondi commenti"
-         const reviewId = button.getAttribute('value');
-
-         // seleziona la sezione dei commenti corretta utilizzando l'ID della recensione
-         const commentSection = document.getElementById(`comment-section-${reviewId}`);
-
-         // nascondi la sezione dei commenti
-         commentSection.classList.add('hidden');
-
-         // sostituisci il testo del pulsante "Nascondi commenti" con "Vedi commenti"
-         button.innerText = 'Vedi commenti';
-
-         // aggiungi un nuovo evento click al pulsante "Vedi commenti"
-         button.setAttribute('onclick', 'showComments(this)');
-      }
-
-
       var ctx = document.getElementById("myChart");
 
       new Chart(ctx, {

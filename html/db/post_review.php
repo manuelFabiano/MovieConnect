@@ -23,16 +23,14 @@ if($_SERVER["REQUEST_METHOD"] === "POST"){
             if($tag !== '');
                 $sql1->execute();
         }
-        
-        
-        
         include("./calc_average.php");
+        $conn->close();
         echo "<script>alert('Recensione pubblicata!!');
                       window.location.href = '../film.php?id=".$id_scheda."';
               </script>";
     }else{
-        echo "ERRORE: ".$conn->error;
+        echo "Errore nella query! ".$conn->error;
     }
 }
-
+$conn->close();
 ?>

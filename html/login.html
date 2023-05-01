@@ -8,16 +8,15 @@
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="h-screen overflow-hidden flex items-center justify-center" style="background: #edf2f7;">
-    <!-- component -->
 <div class="min-h-screen flex flex-col justify-center sm:py-12">
   <div class="p-10 xs:p-0 mx-auto md:w-full md:max-w-md">
-    <h1 class="font-bold text-center text-2xl mb-5">Bentornato su Giuseppe.com</h1>  
+    <h1 class="font-bold text-center text-2xl text-gray-500 mb-5">Accedi a MovieConnect!</h1>  
     <div class="bg-white shadow w-full rounded-lg divide-y divide-gray-200">
       <div class="px-5 py-7">
-        <form action="/php/login.php" method="POST">
+        <form action="/db/login.php" method="POST">
           
-          <label for="username" class="font-semibold text-sm text-gray-600 pb-1 block">Username</label>
-          <input type="text" name="username" id="username" class="border rounded-lg px-3 py-2 mt-1 mb-5 text-sm w-full" />
+          <label for="username" class="font-semibold text-sm text-gray-600 pb-1 block">Email o Username</label>
+          <input autocomplete="off" type="text" name="username" id="username" class="border rounded-lg px-3 py-2 mt-1 mb-5 text-sm w-full" />
           
           <label for="password" class="font-semibold text-sm text-gray-600 pb-1 block">Password</label>
           <input type="password" name="password" id="password" class="border rounded-lg px-3 py-2 mt-1 mb-5 text-sm w-full" />

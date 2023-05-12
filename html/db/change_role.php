@@ -1,11 +1,11 @@
 <?php 
 //Cambia il ruolo ad un utente
-include_once("./db.php");
+
 session_start();
 if(isset($_POST['username']) and $_SESSION['tipo'] == 2){
-    $usr = $_POST['username'];
-    $ruolo = $_POST['ruolo'];
-    
+    include_once("./db.php");
+    $usr = $conn->real_escape_string($_POST['username']);
+    $ruolo = $conn->real_escape_string($_POST['ruolo']);
     if($ruolo == 'admin'){
         $sql = "UPDATE account SET tipo = '2' WHERE username = '$usr'";
     }
@@ -21,5 +21,4 @@ if(isset($_POST['username']) and $_SESSION['tipo'] == 2){
     }else echo $conn->error;
     $conn->close();
 }
-$conn->close();
 ?>

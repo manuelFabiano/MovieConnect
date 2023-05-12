@@ -1,18 +1,29 @@
 <?php
 session_start();
 if (!isset($_SESSION['username'])) {
-    header("location: ./index.php");
-}
-include("./navbar.php");
+    echo "<script>
+             alert('Devi essere loggato!');
+             window.location.href = './login.html';    
+          </script>";
+ }
 //fetch_profile.php preleva tutti i dati necessari per visualizzare il profilo dell'utente con username $_GET['usr']
+
 include("./db/fetch_profile.php");
+include("./navbar.php");
+
+include("./db/print_vote.php")
 ?>
 <html>
  
 <body style="background: #edf2f7;">
     <div class="flex items-center gap-5">
         <div class="self-start bg-white shadow-2xl border pb-6 pt-12 w-4/6 mt-16 ml-16 px-10 rounded-2xl">
+            <div class="flex" >
             <div class="font-bold text-5xl pb-1">Profilo di <? echo $profile['username'] ?></div>
+            <?if($profile['username'] == $_SESSION['username']){?>
+            <a onclick="javascript:location.href='./change_password.php';" class="ml-5 mt-5 font-medium text-blue-600 cursor-pointer hover:underline">Modifica password</a>
+            <?}?>
+            </div>
             <div class="flex">
                 <div class="flex flex-col">
                     <div class="mt-5 ml-4 flex">
@@ -74,7 +85,7 @@ include("./db/fetch_profile.php");
                 </div>
                 <div class="p-2 bg-white rounded-b-lg">
                     <div><? echo $serie['titolo'] ?></div>
-                    <div>Serie TV - <? echo $serie['inizio'] . "/" . $serie['fine'] ?></div>
+                    <div>Serie TV - <? echo $serie['inizio'] . "/"; if($serie['fine'] == 0){echo "In corso";}else echo $serie['fine']; ?></div>
                 </div>
             </div>
         </div>
@@ -99,7 +110,10 @@ include("./db/fetch_profile.php");
                 $i += 1;
                 $likebutton = "button" . $i;
                 $review['voto'] += 0;
-                $review['data'] = date("d/m/Y", strtotime($review['data']));
+                $vote_color = print_vote($review['voto']);
+                $review['data_ora'] = explode(" ",$review['data_ora']);
+                $review['data'] = date("d/m/Y", strtotime($review['data_ora'][0]));
+                $review['ora'] = $review['data_ora'][1];
                 echo  '<li class="bg-white border border-gray-100 w-custom p-4 rounded-lg shadow-sm hover:shadow-2xl transition-shadow duration-300 ease-in-out">
                         <div class="flex justify-between items-start">
                            <div class="flex">
@@ -108,8 +122,8 @@ include("./db/fetch_profile.php");
                               <div class="text-gray-400 ml-2 pt-4 text-sm">pubblicata il ' . $review['data'] . ', alle ' . $review['ora'] . ' </div>
                   
                            </div>
-                           <div class="bg-green-500 text-white font-bold rounded-full p-3 hover:bg-white hover:text-green-500">
-                              ' . $review['voto'] . '</div>
+                           <div class="transform transition duration-500 hover:scale-150  bg-'.$vote_color.'-500 text-white font-bold rounded-full p-3 px-4 hover:bg-white hover:text-'.$vote_color.'-500">
+                            ' . $review['voto'] . '</div>
                         </div>
                         <div class="overflow-y-auto scroll-smooth max-h-40 text-justify">' . $review['contenuto'] . '
                         </div>
@@ -143,17 +157,16 @@ include("./db/fetch_profile.php");
                         <ul class="">';
 
                     foreach ($comments as $comment) {
-                        $comment['data'] = date("d/m/Y", strtotime($comment['data']));
-                        echo '<li class="bg-white border border-gray-100 w-full p-4 rounded-lg shadow-sm hover:shadow-2xl transition-shadow duration-300 ease-in-out">
+                        $comment['data_ora'] = explode(" ",$comment['data_ora']);
+                        $comment['data'] = date("d/m/Y", strtotime($comment['data_ora'][0]));
+                        $comment['ora'] = $comment['data_ora'][1];
+                        echo '<li class="mt-1 bg-white border border-gray-100 w-full p-4 rounded-lg shadow-sm hover:shadow-2xl transition-shadow duration-300 ease-in-out">
                            <div class="flex justify-between items-start">
                            <div class="flex">
                               <div class="text-gray-600 py-3 text-lg">Commento di</div>
                               <div class="text-blue-500 ml-1 py-3 text-lg hover:underline cursor-pointer">' . $comment['username'] . '</div>
                               <div class="text-gray-400 ml-2 pt-4 text-sm">pubblicata il ' . $comment['data'] . ', alle ' . $comment['ora'] . ' </div>
-                  
                            </div>
-                           <div class="bg-green-500 text-white font-bold rounded-full p-3 hover:bg-white hover:text-green-500">
-                              ' . 'test' . '</div>
                         </div>
                         <div class="overflow-y-auto scroll-smooth max-h-40 text-justify">' . $comment['contenuto'] . '
                         </div>

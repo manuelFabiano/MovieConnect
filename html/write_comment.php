@@ -1,5 +1,11 @@
 <?php
 session_start();
+if (!isset($_SESSION['username'])) {
+    echo "<script>
+             alert('Devi essere loggato!');
+             window.location.href = './login.html';    
+          </script>";
+ }
 if (isset($_POST['id_recensione'])) { ?>
     <head>
         <title>MovieConnect</title>

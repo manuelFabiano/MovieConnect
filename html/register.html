@@ -4,6 +4,7 @@
 <head>
   <title>MovieConnect</title>
   <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 </head>
 
 <body class="h-screen flex items-center justify-center" style="background: #edf2f7;">
@@ -12,7 +13,7 @@
       <h1 class="font-bold text-center text-2xl mt-10 text-gray-600">Registrati su MovieConnect!</h1>
       <div class="bg-white shadow w-full rounded-lg divide-y divide-gray-200">
         <div class="px-5 py-7">
-          <form action="/db/register.php" method="POST" autocomplete="off">
+          <form id="register" action="/db/register.php" method="POST" autocomplete="off">
 
             <label for="nome" class="font-semibold text-sm text-gray-600 pb-1 block">Nome</label>
             <input type="text" name="nome" id="nome" required
@@ -27,10 +28,11 @@
               class="border rounded-lg px-3 py-2 mt-1 mb-5 text-sm w-full" />
 
             <label for="data" class="font-semibold text-sm text-gray-600 pb-1 block">Data di nascita(gg/mm/aa)</label>
-            <input type="date" name="data" id="data" required
+            <input type="date" name="data" id="data" min="1923-01-01" required
               class="border rounded-lg px-3 py-2 mt-1 mb-5 text-sm w-full" />
 
-            <label for="residenza" class="font-semibold text-sm text-gray-600 pb-1 block">Città in cui vivi</label>
+            <label for="residenza" class="font-semibold text-sm text-gray-600 pb-1 block">Citt&agrave; in cui
+              vivi</label>
             <input type="text" name="residenza" id="residenza" required
               class="border rounded-lg px-3 py-2 mt-1 mb-5 text-sm w-full" />
 
@@ -41,7 +43,9 @@
             <label for="password" class="font-semibold text-sm text-gray-600 pb-1 block">Password</label>
             <input type="password" name="password" id="password" required
               class="border rounded-lg px-3 py-2 mt-1 mb-5 text-sm w-full" />
-
+            <a id="usernameerror" class="hidden -mr-64 text-xs text-red-600 ">Esiste gi&agrave; un account con questo
+              username o email!</a>
+                <a id="emailerror" class="hidden text-xs text-red-600 ">Email non valida!</a>
             <button type="submit"
               class="transition duration-200 bg-blue-500 hover:bg-blue-600  text-white w-full py-2.5 rounded-lg text-sm shadow-sm hover:shadow-md font-semibold text-center inline-block">
               <span class="inline-block mr-2">Registrati</span>
@@ -72,5 +76,42 @@
     </div>
   </div>
 </body>
+<script>
+  $(document).ready(function () {
+    $('#register').submit(function (event) {
+      event.preventDefault(); // previene l'invio del form
+
+      // recupera i dati dal form
+      var formData = new FormData(this);
+
+      // invia i dati tramite ajax
+      $.ajax({
+        type: 'POST',
+        url: $(this).attr('action'),
+        data: formData,
+        processData: false,
+        contentType: false,
+
+        success: function (response) {
+          console.log(response);
+          if(response == "Email non valida") {
+            $('#emailerror').removeClass('hidden');
+            $('#usernameerror').addClass('hidden');
+          } else if (response == "Duplicate entry") {
+            $('#usernameerror').removeClass('hidden');
+            $('#emailerror').addClass('hidden');
+          } else if (response == "Success") {
+            // Nessun errore corrispondente, invia il form
+            alert('Registrazione terminata con successo!');
+            window.location.href = '../login.html';
+          }
+        },
+        error: function (xhr, status, error) {
+          console.error(error);
+        }
+      });
+    });
+  });
+</script>
 
 </html>

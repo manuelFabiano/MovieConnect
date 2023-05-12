@@ -2,6 +2,12 @@
 //In questa pagina, accessibile solo agli admin e i moderatori, vengono visualizzate tutte le richieste di
 //inserimento submittate dagli utenti.
 session_start();
+if (!isset($_SESSION['username'])) {
+    echo "<script>
+             alert('Devi essere loggato!');
+             window.location.href = './login.html';    
+          </script>";
+ }
 if ($_SESSION['tipo'] > 0) {
     //fetch_requests preleva dal db tutte le richieste submittate dagli utenti.
     include("./db/fetch_requests.php");
@@ -61,7 +67,9 @@ if ($_SESSION['tipo'] > 0) {
                     <tbody>
                         <?php
                         foreach ($requests as $request) {
-                            $request['data'] = date("d/m/Y", strtotime($request['data']));
+                            $request['data_ora'] = explode(" ",$request['data_ora']);
+                            $request['data'] = date("d/m/Y", strtotime($request['data_ora'][0]));
+                            $request['ora'] = $request['data_ora'][1];
                         ?>
                             <tr class="bg-white border-b hover:bg-gray-50 <? if (is_null($request['risposta'])) {
                                                                                 echo "attesa";

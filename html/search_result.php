@@ -1,11 +1,15 @@
 <?php
 session_start();
 if (!isset($_SESSION['username'])) {
-    header("location: ./index.php");
-}
+    echo "<script>
+             alert('Devi essere loggato!');
+             window.location.href = './login.html';    
+          </script>";
+ }
 include("./navbar.php");
 //search.php fornisce i risultati relativi alla ricerca
 include("./db/search.php");
+include("./db/print_vote.php");
 ?>
 <html>
 
@@ -34,13 +38,13 @@ include("./db/search.php");
 </style>
 
 <div class="flex flex-col items-center">
-    <div class="flex bg-gradient-to-r from-gray-200 pb-6 pt-12 w-11/12 mt-16 px-10 rounded-2xl">
+    <div class="flex flex-row-reverse bg-gradient-to-r from-gray-200 pb-6 pt-12 w-11/12 mt-16 px-10 rounded-2xl">
 
-        <div class="w-52 text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg">
-            <button id="allbutton" type="button" class="w-full px-4 py-2 font-medium text-left border-b border-gray-200 cursor-pointer hover:bg-gray-100 hover:text-blue-700 focus:bg-blue-700 focus:text-white">
+        <div class="fixed left-20 w-52 text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg">
+            <button autofocus id="allbutton" type="button" class="w-full px-4 py-2 font-medium text-left border-b border-gray-200 cursor-pointer hover:bg-gray-100 hover:text-blue-700 focus:bg-blue-700 focus:text-white rounded-t-lg">
                 Tutto
             </button>
-            <button id="filmbutton" type="button" class="w-full px-4 py-2 font-medium text-left border-b border-gray-200 cursor-pointer hover:bg-gray-100 hover:text-blue-700 focus:outline-none  focus:bg-blue-700 focus:text-white">
+            <button id="filmbutton" type="button" class="w-full px-4 py-2 font-medium text-left border-b border-gray-200 cursor-pointer hover:bg-gray-100 hover:text-blue-700 focus:outline-none  focus:bg-blue-700 focus:text-white ">
                 Film
             </button>
             <button id="seriesbutton" type="button" class="w-full px-4 py-2 font-medium text-left border-b border-gray-200 cursor-pointer hover:bg-gray-100 hover:text-blue-700 focus:outline-none  focus:bg-blue-700 focus:text-white">
@@ -50,7 +54,7 @@ include("./db/search.php");
                 Persone
             </button>
         </div>
-        <div class="ml-3 w-full">
+        <div class="w-5/6 ml-3">
         <form action="./search_result.php" method="get">
                 <label for="search" class="mb-2 text-sm font-medium text-gray-900 sr-only ">Cerca</label>
                 <div class="relative">
@@ -67,7 +71,7 @@ include("./db/search.php");
             </form>
 
             <?if($film_num_results == 0 and $series_num_results == 0){
-                echo "Siamo spiacenti! la ricerca non ha prodotto risultati!";
+                echo "Siamo spiacenti! la ricerca non ha prodotto risultati!<br><br><br>";
             }?>
             <!-- RISULTATI FILM-->
             <?if($film_num_results > 0){?>
@@ -77,11 +81,15 @@ include("./db/search.php");
                 
                 <div class="grid grid-cols-5 gap-4">
                     <?php foreach ($filmresults as $card) {
+                        $colore = print_vote($card['media']);
                         $card['uscita'] = date("d/m/Y", strtotime($card['uscita']));
                         echo  '<form action="./film.php" method="get">
                     <input type="hidden" id="id" name="id" value="' . $card['id'] . '">
-                    <div onclick="javascript:this.parentNode.submit();" class="cursor-pointer max-w-full h-96 bg-white rounded-2xl shadow-sm hover:shadow-2xl transition-shadow duration-300 ease-in-out">
+                    <div onclick="javascript:this.parentNode.submit();" class="cursor-pointer max-w-full h-96 bg-white rounded-2xl shadow-sm hover:shadow-2xl transform transition duration-500 ease-in-out hover:scale-105">
+                        <div class="sticky">
+                        <div class="z-10 absolute bg-'.$colore.'-500 text-white border border-'.$colore.'-600 rounded-full p-1">' . $card['media'] . '</div>
                         <img src="./poster/' . $card['percorso_immagine'] . '" class="rounded-t-lg"/>
+                        </div>
                         <div class="p-2">
                             <div>' . $card['titolo'] . '</div>
                             <div>Film - ' . $card['uscita'] . '</div>
@@ -102,11 +110,14 @@ include("./db/search.php");
                 
                 <div class="grid grid-cols-5 gap-4">
                     <?php foreach ($seriesresults as $card) {
-
+                        $colore = print_vote($card['media']);
                         echo  '<form action="./film.php" method="get">
                     <input type="hidden" id="id" name="id" value="' . $card['id'] . '">
-                    <div onclick="javascript:this.parentNode.submit();" class="cursor-pointer max-w-full h-96 bg-white rounded-2xl shadow-sm hover:shadow-2xl transition-shadow duration-300 ease-in-out">
-                        <img src="./poster/' . $card['percorso_immagine'] . '" class="rounded-t-lg"/>
+                    <div onclick="javascript:this.parentNode.submit();" class="cursor-pointer max-w-full h-96 bg-white rounded-2xl shadow-sm hover:shadow-2xl transform transition duration-500 ease-in-out hover:scale-105">
+                    <div class="sticky">
+                    <div class="z-10 absolute bg-'.$colore.'-500 text-white border border-'.$colore.'-600 rounded-full p-1">' . $card['media'] . '</div>
+                    <img src="./poster/' . $card['percorso_immagine'] . '" class="rounded-t-lg"/>
+                    </div>
                         <div class="p-2">
                             <div>' . $card['titolo'] . '</div>
                             <div>Serie - ' . $card['inizio'] . '/' . $card['fine'] . '</div>
@@ -129,7 +140,7 @@ include("./db/search.php");
                     <?php foreach ($peopleresults as $card) {
 
                         echo  '<form action="./search_result.php" method="get">
-                    <div onclick="javascript:this.parentNode.submit();" class="cursor-pointer max-w-full h-96 bg-white rounded-2xl shadow-sm hover:shadow-2xl transition-shadow duration-300 ease-in-out">
+                    <div onclick="javascript:this.parentNode.submit();" class="cursor-pointer max-w-full h-96 bg-white rounded-2xl shadow-sm hover:shadow-2xl transform transition duration-500 ease-in-out hover:scale-105">
                         <input type="hidden" name="search_people" value="'.$card['nome'].'">
                         <img src="./photos/' . $card['percorso_foto'] . '" class="rounded-t-lg"/>
                         <div class="p-2">
@@ -149,6 +160,10 @@ include("./db/search.php");
 
 <!--SCRIPT PER I FILTRI-->
 <script src="./js/search_result.js"></script>
+
+<script>
+
+</script>
 
 <!--SCRIPT PER AUTOCOMPLETE-->
 <script type="text/javascript" src="./js/autocomplete.js"></script>

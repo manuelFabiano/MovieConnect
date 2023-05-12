@@ -3,7 +3,7 @@
 //Preleva dal db la watchlist dell'utente con username = $_SESSION['username']
 include_once("./db/db.php");
 
-$username = $_SESSION['username'];
+$username = $conn->real_escape_string($_SESSION['username']);
 
 //QUERY FILM
 $sql = "SELECT da_vedere.*, scheda.* , locandina.percorso_immagine FROM da_vedere, scheda, locandina WHERE da_vedere.username = '$username' AND da_vedere.id_scheda = scheda.id AND locandina.id_scheda = da_vedere.id_scheda AND scheda.tipo = '0'  GROUP BY scheda.id";
@@ -21,6 +21,6 @@ if($seriesresults = $conn->query($sql1)){
     if ($seriesresults->num_rows > 0){
         $series_num_results = $seriesresults->num_rows;
     }else $series_num_results = 0;
-}echo "Errore nella query!" . $conn->error;
+}else echo "Errore nella query!" . $conn->error;
 
 ?>

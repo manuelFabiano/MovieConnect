@@ -1,5 +1,11 @@
 <?php
 session_start();
+if (!isset($_SESSION['username'])) {
+    echo "<script>
+             alert('Devi essere loggato!');
+             window.location.href = './login.html';    
+          </script>";
+ }
 if ($_SESSION['tipo'] == 2) {
     //fetch_users preleva tutti gli utenti registrati al sito
     include("./db/fetch_users.php");
@@ -140,7 +146,7 @@ if ($_SESSION['tipo'] == 2) {
                             <button type="submit" name="ruolo" id="ruolo" value="admin" class="bg-red-500 text-white py-2 px-4 rounded mr-2">Admin</button>
                             <button type="submit" name="ruolo" id="ruolo" value="moderator" class="bg-red-500 text-white py-2 px-4 rounded mr-2">Moderatore</button>
                             <button type="submit" name="ruolo" id="ruolo" value="user" class="bg-red-500 text-white py-2 px-4 rounded mr-2">Utente</button>
-                            <button id="cambia-ruolo-modal-cancel" class="bg-gray-500 text-white py-2 px-4 rounded">Annulla</button>
+                            <button type="button" id="cambia-ruolo-modal-cancel" class="bg-gray-500 text-white py-2 px-4 rounded">Annulla</button>
                         </div>
                     </form>
                 </div>

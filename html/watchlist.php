@@ -1,8 +1,11 @@
 <?php
 session_start();
 if (!isset($_SESSION['username'])) {
-    header("location: ./index.php");
-}
+    echo "<script>
+             alert('Devi essere loggato!');
+             window.location.href = './login.html';    
+          </script>";
+ }
 include("./navbar.php");
 //fetch_watchlist.php preleva dal db la watchlist dell'utente con username = $_SESSION['username']
 include("./db/fetch_watchlist.php");
@@ -31,13 +34,14 @@ include("./db/fetch_watchlist.php");
     li:hover {
         background: #f0f0f0;
     }
+    
 </style>
 
 <div class="flex flex-col items-center">
-    <div class="flex bg-gradient-to-r from-gray-200 pb-6 pt-12 w-11/12 mt-16 px-10 rounded-2xl">
+    <div class="flex flex-row-reverse bg-gradient-to-r from-gray-200 pb-6 pt-12 w-11/12 mt-16 px-10 rounded-2xl">
 
-        <div class="w-52 text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg">
-            <button id="allbutton" type="button" class="w-full px-4 py-2 font-medium text-left border-b border-gray-200 cursor-pointer hover:bg-gray-100 hover:text-blue-700 focus:bg-blue-700 focus:text-white">
+        <div class="fixed left-20 w-52 text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg">
+            <button autofocus id="allbutton" type="button" class="w-full px-4 py-2 font-medium text-left border-b border-gray-200 cursor-pointer hover:bg-gray-100 hover:text-blue-700 focus:bg-blue-700 focus:text-white">
                 Tutto
             </button>
             <button id="filmbutton" type="button" class="w-full px-4 py-2 font-medium text-left border-b border-gray-200 cursor-pointer hover:bg-gray-100 hover:text-blue-700 focus:outline-none  focus:bg-blue-700 focus:text-white">
@@ -53,7 +57,7 @@ include("./db/fetch_watchlist.php");
                 Da vedere
             </button>
         </div>
-        <div class="ml-3 w-full">
+        <div class="w-5/6 ml-3">
             <!-- RISULTATI FILM-->
             <? if ($film_num_results > 0) { ?>
                 <div id="film">
@@ -69,7 +73,7 @@ include("./db/fetch_watchlist.php");
                             } else {
                                 echo "visto";
                             }
-                            echo ' flex cursor-pointer w-2/3 h-72 bg-white rounded-2xl shadow-sm hover:shadow-2xl transition-shadow duration-300 ease-in-out">
+                            echo ' flex cursor-pointer w-2/3 h-72 bg-white rounded-2xl shadow-sm hover:shadow-2xl transform transition duration-500 ease-in-out hover:scale-105">
                                     <form action="./film.php" method="get">
                                     <input type="hidden" id="id" name="id" value="' . $card['id'] . '">
                                     <img onclick="javascript:this.parentNode.submit();" src="./poster/' . $card['percorso_immagine'] . '" class="w-64 h-72 rounded-l-2xl"/>
@@ -78,6 +82,7 @@ include("./db/fetch_watchlist.php");
                                         <div class="text-2xl">' . $card['titolo'] . '</div>
                                         <div class="text-xl">Film - ' . $card['uscita'] . '</div>
                                         <div>Media voti : ' . $card['media'] . '</div>';
+                                  echo '<div class="h-2/5 overflow-scroll mb-5" >'. $card['sinossi'] .'</div>';
                             if ($card['visto'] == 0) {
                                 echo
                                 '<form action="./db/mark_as_watched.php" method="post">
@@ -100,7 +105,7 @@ include("./db/fetch_watchlist.php");
 
             <!-- RISULTATI SERIE -->
             <? if ($series_num_results > 0) { ?>
-                <div id="series">
+                <div class="mt-2" id="series">
                     <div class="text-3xl">Serie<? if (isset($_GET['search_people'])) echo " con " . $_GET['search_people']; ?></div>
                     <div class="text-lg mb-2 ">Hai in watchlist <? echo $series_num_results ?> serie TV!</div>
 
@@ -113,15 +118,20 @@ include("./db/fetch_watchlist.php");
                             } else {
                                 echo "visto";
                             }
-                            echo ' flex cursor-pointer w-2/3 h-72 bg-white rounded-2xl shadow-sm hover:shadow-2xl transition-shadow duration-300 ease-in-out">
+                            echo ' flex cursor-pointer w-2/3 h-72 bg-white rounded-2xl shadow-sm hover:shadow-2xl transform transition duration-500 ease-in-out hover:scale-105">
                                     <form action="./film.php" method="get">
                                         <input type="hidden" id="id" name="id" value="' . $card['id'] . '">
                                         <img onclick="javascript:this.parentNode.submit();" src="./poster/' . $card['percorso_immagine'] . '" class="w-64 h-72 rounded-l-2xl"/>
                                     </form>
                                     <div class="p-2 bg-white w-full rounded-r-2xl">
                                         <div class="text-2xl">' . $card['titolo'] . '</div>
-                                        <div class="text-xl">Serie TV - ' . $card['inizio'] . '/' . $card['fine'] . '</div>
+                                        <div class="text-xl">Serie TV - ' . $card['inizio'] . '/';
+                                        if($card['fine'] == 0){
+                                            echo "In corso";
+                                        }else echo $card['fine'];
+                                  echo '</div>
                                         <div>Media voti : ' . $card['media'] . '</div>';
+                                  echo '<div class="h-2/5 overflow-scroll mb-5" >'. $card['sinossi'] .'</div>';
                             if ($card['visto'] == 0) {
                                 echo
                                 '<form action="./db/mark_as_watched.php" method="post">
@@ -148,5 +158,6 @@ include("./db/fetch_watchlist.php");
 </div>
 
 <script src="./js/watchlist.js"></script>
+
 
 </html>

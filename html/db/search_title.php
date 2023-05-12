@@ -26,7 +26,7 @@ if (isset($_POST['term'])) {
     }
 } elseif (isset($_POST['searchfilm'])) {
     $searchfilm = $conn->real_escape_string($_POST['searchfilm']);
-    $query = "SELECT titolo FROM scheda WHERE titolo LIKE '%$searchfilm%' LIMIT 10";
+    $query = "SELECT DISTINCT titolo FROM scheda WHERE titolo LIKE '%$searchfilm%' LIMIT 10 ";
     if ($result = $conn->query($query)) {
         if ($result->num_rows > 0) {
             while ($autocomplete = $result->fetch_array(MYSQLI_ASSOC)) {
@@ -36,21 +36,30 @@ if (isset($_POST['term'])) {
     }
 } elseif (isset($_POST['titolo'])) {
     $titolo = $conn->real_escape_string($_POST['titolo']);
-    $sql = "SELECT id FROM scheda WHERE titolo = '$titolo'";
+    $sql = "SELECT id , titolo, tipo, uscita, inizio FROM scheda WHERE titolo = '$titolo'";
     if ($result = $conn->query($sql)) {
         //BISOGNA AGGIUNGERE IL CASO DEI FILM CON LO STESSO TITOLO
-        if ($result->num_rows == 1) {
-            $row = $result->fetch_array(MYSQLI_ASSOC);
-            echo "<script>
-                      window.location.href = '../write_review.php?id=" . $row['id'] . "';
-              </script>";
+        if ($result->num_rows > 1) {?>
+            <form id="Form" action="../add_film.php" method="post">
+                <?php
+                
+                echo '<input type="hidden" name="id" value="' . $id . '">';
+                
+                ?>
+            </form>
+            
+            <script>
+                document.getElementById('Form').submit();
+            </script>
+    <?
+              
         } elseif ($result->num_rows == 0) {
             //aggiungo la scheda e la richiesta
             $sql1 = "INSERT INTO scheda (titolo) VALUES ('$titolo')";
             if ($result = $conn->query($sql1)) {
                 $id_scheda = $conn->insert_id;
-                $username = $_SESSION['username'];
-                $sql2 = "INSERT INTO richiesta_inserimento (username, id_scheda, data, ora) VALUES ('$username','$id_scheda',now(), now())";
+                $username = $conn->real_escape_string($_SESSION['username']);
+                $sql2 = "INSERT INTO richiesta_inserimento (username, id_scheda, data_ora) VALUES ('$username','$id_scheda',now())";
                 if ($result = $conn->query($sql2)) {
                     echo "<script>
                             window.location.href = '../write_review.php?id=" . $id_scheda . "';

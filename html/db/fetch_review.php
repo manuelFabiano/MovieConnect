@@ -1,7 +1,7 @@
 <?php 
 include_once("./db/db.php");
-$id = $_GET['id'];
-$username = $_SESSION['username'];
+$id = $conn->real_escape_string($_GET['id']);
+$username = $conn->real_escape_string($_SESSION['username']);
 
 $sql = "SELECT * FROM recensione WHERE id_scheda = '$id' AND username = '$username'";
 

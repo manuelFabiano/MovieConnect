@@ -1,8 +1,8 @@
 <?php
 //Aggiunge un film alla watchlist dell'utente
-include_once("./db.php");
 session_start();
 if(isset($_POST['id']) and isset($_SESSION['username'])){
+    include_once("./db.php");
     $id_scheda = $conn->real_escape_string($_POST['id']);
     $username = $conn->real_escape_string($_SESSION['username']);
 
@@ -12,5 +12,5 @@ if(isset($_POST['id']) and isset($_SESSION['username'])){
         header("location: ../film.php?id=".$id_scheda);
     }else echo "Errore nella query! " . $conn->error;
     $conn->close();
-}else $conn->close();
+}
 ?>

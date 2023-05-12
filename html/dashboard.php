@@ -7,6 +7,7 @@ if (!isset($_SESSION['username'])) {
 include("./navbar.php");
 //fetch_top.php preleva dal db i 10 film/serie con la media voti più alta
 include("./db/fetch_top.php");
+include("./db/print_vote.php");
 ?>
 <style>
     ul {
@@ -56,13 +57,14 @@ include("./db/fetch_top.php");
     </div>
     <div class="overflow-visible overflow-x-scroll flex gap-2 bg-gradient-to-r from-blue-700 to-blue-400 pb-2 pt-3 w-11/12 h-1/2 px-10 rounded-b-2xl">
         <?php foreach ($top10 as $card) {
+            $colore = print_vote($card['media']);
             //FILM
             if ($card['tipo'] == 0) {
                 echo '<form action="./film.php" method="get" class="overflow-visible transform transition hover:scale-105 duration-300 ease-in-out">
                 <input type="hidden" id="id" name="id" value="' . $card['id'] . '">
                 <div onclick="javascript:this.parentNode.submit();" class="cursor-pointer max-w-full w-48 bg-white rounded-2xl shadow-sm hover:shadow-2xl ">
                     <div class="sticky">
-                    <div class="z-10 absolute bg-white rounded-full p-1">' . $card['media'] . '</div>
+                    <div class="z-10 absolute bg-'.$colore.'-500 text-white border border-'.$colore.'-600 rounded-full p-1">' . $card['media'] . '</div>
                     <img src="./poster/' . $card['percorso_immagine'] . '" class="rounded-t-lg" />
                     </div>
                     <div class="p-2">
@@ -78,19 +80,31 @@ include("./db/fetch_top.php");
             <input type="hidden" id="id" name="id" value="' . $card['id'] . '">
             <div onclick="javascript:this.parentNode.submit();" class="cursor-pointer max-w-full w-48 bg-white rounded-2xl shadow-sm hover:shadow-2xl transition-shadow duration-300 ease-in-out">
             <div class="sticky">
-            <div class="z-10 absolute bg-white rounded-full p-1">' . $card['media'] . '</div>
+            <div class="z-10 absolute bg-'.$colore.'-500 text-white border border-'.$colore.'-600 rounded-full p-1">' . $card['media'] . '</div>
             <img src="./poster/' . $card['percorso_immagine'] . '" class="rounded-t-lg" />
             </div>
                 <div class="p-2">
                     <div>' . $card['titolo'] . '</div>
-                    <div>Serie TV - ' . $card['inizio'] . '/' . $card['fine'] . '</div>
-
+                    <div>Serie TV - ' . $card['inizio'] . '/';
+                    if($card['fine'] == 0){
+                        echo "In corso";
+                    }else echo $card['fine'];
+                    
+              echo '</div>
                 </div>
             </div>
         </form>';
             }
         }
         ?>
+        <form  action="./search_result.php" method="get" class="overflow-visible transform transition hover:scale-105 duration-300 ease-in-out">
+            <input type="hidden" id="search_all" name="all" value="1">
+            <div title="Visualizza tutti i film e serie" onclick="javascript:this.parentNode.submit();" class="cursor-pointer max-w-full w-48 ">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="white" class="w-48 mt-12 h-48">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v6m3-3H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+            </div>
+        </form>
     </div>
 </div>
 

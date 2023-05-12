@@ -34,6 +34,15 @@ films = document.getElementById('film');
         if (series.classList.contains('hidden')) {
             series.classList.remove('hidden');
         }
+        visti.forEach(function(visti) {
+            if (visti.classList.contains('hidden')) {
+                visti.classList.remove('hidden');
+            }
+        });
+
+        daVedere.forEach(function(daVedere) {
+            daVedere.classList.add('hidden');
+        });
 
     })
 

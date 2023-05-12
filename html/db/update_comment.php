@@ -1,4 +1,5 @@
 <?php
+//Aggiorna il contenuto di un commento
 session_start();
 if(isset($_SESSION['username']) and isset($_POST['contenuto'])){
     include("./db.php");
@@ -10,7 +11,8 @@ if(isset($_SESSION['username']) and isset($_POST['contenuto'])){
     if($conn->query($sql)){
         $conn->close();
         header("location: ../film.php?id=". $id_scheda);
-    }
+    }else echo "Errore nella query!" . $conn->error;
+    $conn->close();
 }
-$conn->close();
+
 ?>

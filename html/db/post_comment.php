@@ -8,7 +8,7 @@ $contenuto = $conn->real_escape_string($_POST['contenuto']);
 $redirect = $conn->real_escape_string($_POST['redirect']);
 
 if($_SERVER["REQUEST_METHOD"] === "POST"){
-    $sql="INSERT INTO commento (username, id_recensione, data, ora, contenuto) VALUES ('$username', '$id_recensione', now(), now(), '$contenuto')";
+    $sql="INSERT INTO commento (username, id_recensione, data_ora, contenuto) VALUES ('$username', '$id_recensione', now(), '$contenuto')";
     if($result = $conn->query($sql)){
        if($redirect == 'profile'){
            $conn->close();

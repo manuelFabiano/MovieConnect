@@ -1,6 +1,6 @@
 <?php
 //Viene incluso in post_review.php
-//Calcola la nuova media voti di un film ad ogni recensione
+//Calcola la nuova media voti di un film ad ogni recensione e fa l'update nella scheda del film
 $sql="SELECT voto from recensione WHERE id_scheda ='$id_scheda'";
 if($result = $conn->query($sql)){
     if($result->num_rows > 0){

@@ -2,6 +2,12 @@
 //Questa pagina è molto simile a write_review, fetch_review.php preleva i dati precedentemente pubblicati 
 //dall'utente per permettergli di modificarli
 session_start();
+if (!isset($_SESSION['username'])) {
+    echo "<script>
+             alert('Devi essere loggato!');
+             window.location.href = './login.html';    
+          </script>";
+ }
 if (isset($_GET['id'])) {
     //fetch_title serve a prelevare il titolo dell'opera con id = $_GET['id']
     include("./db/fetch_title.php");

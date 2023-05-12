@@ -9,6 +9,7 @@ $tipo = $conn->real_escape_string($_POST['tipo']);
 $colore = $conn->real_escape_string($_POST['colore']);
 $sinossi = $conn->real_escape_string($_POST['sinossi']);
 $uscita = $conn->real_escape_string($_POST['uscita']);
+$durata = $conn->real_escape_string($_POST['durata']);
 $stagioni = $conn->real_escape_string($_POST['stagioni']);
 $inizio = $conn->real_escape_string($_POST['inizio']);
 $fine = $conn->real_escape_string($_POST['fine']);
@@ -22,8 +23,8 @@ for ($i = 0; $i < $total_count; $i++) {
     $tmpFilePath = $_FILES['locandine']['tmp_name'][$i];
     if ($tmpFilePath != "") {
         //Nuovo path
-        $newFilePath = "../poster/" . $_FILES['locandine']['name'][$i];
-        $nomefile = $_FILES['locandine']['name'][$i];
+        $newFilePath = "../poster/" . $conn->real_escape_string($_FILES['locandine']['name'][$i]);
+        $nomefile = $conn->real_escape_string($_FILES['locandine']['name'][$i]);
         if (move_uploaded_file($tmpFilePath, $newFilePath)) {
             $sql1 = "INSERT INTO locandina (label, id_scheda, percorso_immagine) VALUES ('$nomefile','$id_scheda','$nomefile')";
             if($conn->query($sql1)){
@@ -34,7 +35,7 @@ for ($i = 0; $i < $total_count; $i++) {
         }
     }
 }
-
+/*
 //Salvo i trailer
 $trailers = $conn->real_escape_string($_POST['trailers']);
 //Controllo se sono stati inseriti dei trailer
@@ -52,8 +53,10 @@ if ((!isset($trailers) || trim($trailers) == '')) {
         } else echo $conn->error;
     }
 }
+*/
+
 if ($tipo == 0) {
-    $sql2 = "UPDATE scheda SET titolo = '$titolo', sinossi = '$sinossi', tipo = '0', uscita = '$uscita',colore = '$colore' WHERE id = '$id_scheda' ";
+    $sql2 = "UPDATE scheda SET titolo = '$titolo', sinossi = '$sinossi', tipo = '0', uscita = '$uscita', durata = '$durata' ,colore = '$colore' WHERE id = '$id_scheda' ";
 } else {
     $sql2 = "UPDATE scheda SET titolo = '$titolo', sinossi = '$sinossi', tipo = '1', n_stagioni = '$stagioni', inizio = '$inizio', fine = '$fine', colore = '$colore' WHERE id = '$id_scheda' ";
 }
